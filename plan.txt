@@ -1,0 +1,7 @@
+use traversy authorization
+
+create route to add posts
+create route to get all posts including comments, everything
+
+create route to add comments
+
