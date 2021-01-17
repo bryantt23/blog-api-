@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var UserInstanceSchema = new Schema({
+var UserSchema = new Schema({
   username: {
     type: String,
     required: true,
@@ -11,16 +11,16 @@ var UserInstanceSchema = new Schema({
   },
   posts: [
     {
-      types: Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'Post'
     }
   ]
 });
 
 // Virtual for user's URL
-UserInstanceSchema.virtual('url').get(function () {
+UserSchema.virtual('url').get(function () {
   return '/user/' + this._id;
 });
 
 //Export model
-module.exports = mongoose.model('User', UserInstanceSchema);
+module.exports = mongoose.model('User', UserSchema);

@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var PostInstanceSchema = new Schema({
+var PostSchema = new Schema({
   title: {
     type: String,
     required: true,
@@ -13,22 +13,18 @@ var PostInstanceSchema = new Schema({
     required: true,
     maxlength: 100
   },
-  poster: {
-    type: String,
-    required: true
-  },
   comments: [
     {
-      types: Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'Comment'
     }
   ]
 });
 
 // Virtual for user's URL
-PostInstanceSchema.virtual('url').get(function () {
+PostSchema.virtual('url').get(function () {
   return '/post/' + this._id;
 });
 
 //Export model
-module.exports = mongoose.model('Post', PostInstanceSchema);
+module.exports = mongoose.model('Post', PostSchema);

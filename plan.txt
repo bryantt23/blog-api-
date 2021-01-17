@@ -5,3 +5,5 @@ create route to get all posts including comments, everything
 
 create route to add comments
 
+later try to separate routes like in 
+https://www.robinwieruch.de/node-express-server-rest-api
