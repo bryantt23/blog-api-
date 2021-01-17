@@ -129,15 +129,14 @@ app.post('/api/posts', async function (req, res) {
       return;
     }
     // saved!
-  });
+    //add the post to the user's posts
+    user.posts.push(newPost);
 
-  //add the post to the user's posts
-  user.posts.push(newPost);
-
-  user.save(function (err) {
-    console.log(err);
-    if (err) return;
-    // saved!
+    user.save(function (err) {
+      console.log(err);
+      if (err) return;
+      // saved!
+    });
   });
 });
 
