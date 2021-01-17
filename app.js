@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-// app.use(bodyParser.json());
+
 // https://stackoverflow.com/questions/24543847/req-body-empty-on-posts
 app.use(
   bodyParser.urlencoded({
@@ -19,6 +19,7 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 const User = require('./models/user');
+const Post = require('./models/post');
 
 app.get('/api', (req, res) => {
   res.json({
@@ -93,12 +94,51 @@ app.post('/api/login', (req, res) => {
   });
 });
 
-let dogsArr = [];
-app.post('/api/posts', function (req, res) {
+app.post('/api/posts', async function (req, res) {
   const post = req.body;
   const { title, body } = post;
   console.log(`title: ${title} body: ${body}`);
   res.send(`title: ${title} body: ${body}`);
+  //get the user
+  //TODO verify it's the user i.e. user verifyToken function
+  const user = await User.findOne({ username: 'bt23' }, (err, user) => {
+    if (err) {
+      return done(err);
+    }
+    if (!user) {
+      return done(null, false, { msg: 'Incorrect username' });
+    }
+    // bcrypt.compare(password, user.password, (err, res) => {
+    //   if (res) {
+    //     // passwords match! log user in
+    //     return done(null, user);
+    //   } else {
+    //     // passwords do not match!
+    //     return done(null, false, { msg: 'Incorrect password' });
+    //   }
+    // });
+  });
+  console.log(user.username);
+
+  //create a post
+  const newPost = await new Post({ ...post });
+
+  newPost.save(function (err) {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    // saved!
+  });
+
+  //add the post to the user's posts
+  user.posts.push(newPost);
+
+  user.save(function (err) {
+    console.log(err);
+    if (err) return;
+    // saved!
+  });
 });
 
 app.listen(5000, () => console.log('Server started on port 5000'));
