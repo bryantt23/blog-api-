@@ -1,8 +1,7 @@
 use traversy authorization
 
-
-
 create route to add posts
+
 save the post
 
 

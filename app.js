@@ -20,6 +20,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 const User = require('./models/user');
 const Post = require('./models/post');
+const Comment = require('./models/comment');
 
 app.get('/api', (req, res) => {
   res.json({
@@ -137,6 +138,19 @@ app.post('/api/posts', async function (req, res) {
       if (err) return;
       // saved!
     });
+  });
+});
+
+// get all posts and return as json
+app.get('/api/posts', function (req, res) {
+  Post.find({}, function (err, posts) {
+    var postMap = {};
+
+    posts.forEach(function (post) {
+      postMap[post._id] = post;
+    });
+
+    res.send(postMap);
   });
 });
 
