@@ -143,15 +143,17 @@ app.post('/api/posts', async function (req, res) {
 
 // get all posts and return as json
 app.get('/api/posts', function (req, res) {
-  Post.find({}, function (err, posts) {
-    var postMap = {};
+  Post.find({})
+    .populate('comments')
+    .exec(function (err, posts) {
+      var postMap = {};
 
-    posts.forEach(function (post) {
-      postMap[post._id] = post;
+      posts.forEach(function (post) {
+        postMap[post._id] = post;
+      });
+
+      res.send(postMap);
     });
-
-    res.send(postMap);
-  });
 });
 
 app.listen(5000, () => console.log('Server started on port 5000'));
