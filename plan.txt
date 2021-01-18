@@ -4,9 +4,10 @@ create route to add posts
 
 save the post
 
-
-
 create route to get all posts including comments, everything
+
+
+
 
 create route to add comments
 
@@ -14,6 +15,8 @@ later try to separate routes like in
 https://www.robinwieruch.de/node-express-server-rest-api
 
 later have authentication for the user to add a post
+https://stackoverflow.com/questions/47304039/how-to-check-for-localstorage-value-before-page-loads
+say either welcome back or sign in to add a post
 
 
 

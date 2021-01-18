@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var CommentInstanceSchema = new Schema({
+var CommentSchema = new Schema({
   body: {
     type: String,
     required: true,
@@ -15,9 +15,9 @@ var CommentInstanceSchema = new Schema({
 });
 
 // Virtual for user's URL
-CommentInstanceSchema.virtual('url').get(function () {
+CommentSchema.virtual('url').get(function () {
   return '/comment/' + this._id;
 });
 
 //Export model
-module.exports = mongoose.model('Comment', CommentInstanceSchema);
+module.exports = mongoose.model('Comment', CommentSchema);

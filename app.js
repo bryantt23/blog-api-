@@ -95,6 +95,7 @@ app.post('/api/login', (req, res) => {
   });
 });
 
+// add a new post
 app.post('/api/posts', async function (req, res) {
   const post = req.body;
   const { title, body } = post;
@@ -141,7 +142,7 @@ app.post('/api/posts', async function (req, res) {
   });
 });
 
-// get all posts and return as json
+// get all posts including comments and return as json
 app.get('/api/posts', function (req, res) {
   Post.find({})
     .populate('comments')
@@ -154,6 +155,40 @@ app.get('/api/posts', function (req, res) {
 
       res.send(postMap);
     });
+});
+
+// add a new comment to a post
+app.post('/api/posts/:id', async function (req, res) {
+  const postId = req.params.id;
+  const comment = req.body;
+  const { commenter, body } = comment;
+  let message;
+  await Post.findById(postId, function (err, post) {
+    if (err) {
+      console.log(err);
+      message = err;
+      res.json({ message });
+    }
+    const newComment = new Comment({ commenter: commenter, body: body });
+
+    newComment.save(function (err) {
+      if (err) {
+        message = err;
+        console.log(err);
+        res.json({ message });
+      }
+      post.comments.push(newComment);
+      post.save(function (err) {
+        if (err) {
+          console.log(err);
+          message = err;
+          res.json({ message });
+        }
+        message = 'Comment has been added';
+        res.status(201).json({ message });
+      });
+    });
+  });
 });
 
 app.listen(5000, () => console.log('Server started on port 5000'));
